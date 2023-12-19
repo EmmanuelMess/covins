@@ -78,3 +78,15 @@ RUN cd src && \
     cd $CATKIN_WS/devel/lib && \
     ldd libcv_bridge.so | grep opencv_core && \
     catkin build -j $NR_JOBS ORB_SLAM3
+    
+    
+#--------------------------
+# Add opencv
+#--------------------------
+RUN apt-get update && apt-get install -y \
+                      python-pip \
+                      python-tk \
+                      && rm -rf /var/lib/apt/lists/*
+
+RUN python -m pip install --upgrade pip
+RUN python -m pip install opencv-python bagpy pathlib
