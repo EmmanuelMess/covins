@@ -146,8 +146,6 @@ elif [ $ROS_CLIENT -eq 1 ]; then
 elif [ $FRONTEND_WRAPPER -eq 1 ]; then
         CONFIG_FILE_COMM=$(absPath ${*: -2:1})
         LAUNCH_FILE=$(absPath ${*: -1})
-        echo ${CONFIG_FILE_COMM};
-        echo ${LAUNCH_FILE};
         docker run \
         -it \
         --rm \
