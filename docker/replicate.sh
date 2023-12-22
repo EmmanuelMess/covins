@@ -7,6 +7,7 @@ function echoUsage()
             \t -s covins server [COMM_CONFIG SERVER_CONFIG] \n\
             \t -o ros orbslam client [COMM_CONFIG ROS_LAUNCHFILE DATASET]\n\
             \t -t terminal [DATASET]\n\
+            \t -p play agent [DATASET AGENT_NUMBER]\n\
             \t -c run roscore \n\
             \t -v run rviz \n\
             \t -h help" >&2
@@ -84,8 +85,9 @@ SERVER=0
 ROS_CLIENT=0
 ROS_CORE=0
 RVIZ=0
+PLAYER=0
 
-while getopts "hsocvt" opt; do
+while getopts "hsocvpt" opt; do
     case "$opt" in
         h)
             echoUsage
@@ -98,6 +100,8 @@ while getopts "hsocvt" opt; do
         c)  ROS_CORE=1
             ;;
         v)  RVIZ=1
+            ;;
+        p)  PLAYER=1
             ;;
         t)  ;;
         *)
@@ -164,6 +168,19 @@ elif [ $RVIZ -eq 1 ]; then
                  "source devel/setup.bash; \
                  roslaunch src/covins/covins_backend/launch/tf.launch &
                  rviz -d /root/covins_ws/src/covins/covins_backend/config/covins.rviz"
+elif [ $PLAYER -eq 1 ]; then
+        CODE=$(absPath ${*: -3:2})
+	    DATASET=$(absPath ${*: -2:1})
+	    ARG_NUM=${*: -1}
+        docker run \
+        -it \
+        --rm \
+        --net=host \
+        --volume "${CODE}:${CATKIN_WS}/code" \
+        --volume "${DATASET}:${CATKIN_WS}/dataset" \
+        --workdir "/root/covins_ws/code/player" \
+        covins \
+        /bin/bash -c "python main.py ${ARG_NUM}"
 else
         CODE=$(absPath ${*: -2:1})
 	    DATASET=$(absPath ${*: -1})
