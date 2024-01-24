@@ -112,6 +112,7 @@ while getopts "hsocvpt" opt; do
 done
 
 CATKIN_WS=/root/covins_ws
+ROS_IP=127.0.0.102
 if [ $SERVER -eq 1 ]; then
         CONFIG_FILE_COMM=$(absPath ${*: -2:1})
         CONFIG_FILE_BACKEND=$(absPath ${*: -1})
@@ -134,6 +135,7 @@ elif [ $ROS_CLIENT -eq 1 ]; then
         -it \
         --rm \
         --net=host \
+        --env ROS_MASTER_URI=${ROS_MASTER_URI} \
         --volume "${CONFIG_FILE_COMM}:${CATKIN_WS}/src/covins/covins_comm/config/config_comm.yaml" \
         --volume "${LAUNCH_FILE}:${CATKIN_WS}/src/covins/orb_slam3/Examples/ROS/ORB_SLAM3/launch/launch_docker_ros_euroc.launch" \
         covins \
@@ -176,6 +178,7 @@ elif [ $PLAYER -eq 1 ]; then
         -it \
         --rm \
         --net=host \
+        --env ROS_MASTER_URI=${ROS_MASTER_URI} \
         --volume "${CODE}:${CATKIN_WS}/code" \
         --volume "${DATASET}:${CATKIN_WS}/dataset" \
         --workdir "/root/covins_ws/code/player" \
