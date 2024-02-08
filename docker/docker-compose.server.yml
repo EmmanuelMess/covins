@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  roscore:
+    image: covins
+    command: /bin/bash -c "cd ${CATKIN_WS}; roscore"
+    network_mode: "host"
+    environment:
+      ROS_MASTER_URI: ${ROS_MASTER_URI}
+  covins_server:
+    image: covins
+    depends_on:
+      - roscore
+    command: /bin/bash -c "cd ${CATKIN_WS}; source devel/setup.bash; rosrun covins_backend covins_backend_node"
+    network_mode: "host"
+    volumes:
+      - ${CONFIG_FILE_COMM}:${CATKIN_WS}/src/covins/covins_comm/config/config_comm.yaml
+      - ${CONFIG_FILE_BACKEND}:${CATKIN_WS}/src/covins/covins_backend/config/config_backend.yaml
+    environment:
+      ROS_MASTER_URI: ${ROS_MASTER_URI}

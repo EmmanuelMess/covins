@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  client:
+    image: covins
+    command: /bin/bash -c "cd ${CATKIN_WS}; source devel/setup.bash; roslaunch ORB_SLAM3 launch_docker_ros_euroc.launch ag_n:=${AGENT_NUM}"
+    network_mode: "host"
+    volumes:
+      - ${CONFIG_FILE_COMM}:${CATKIN_WS}/src/covins/covins_comm/config/config_comm.yaml
+      - ${LAUNCH_FILE}:${CATKIN_WS}/src/covins/orb_slam3/Examples/ROS/ORB_SLAM3/launch/launch_docker_ros_euroc.launch
+    environment:
+      ROS_MASTER_URI: ${ROS_MASTER_URI}
+      AGENT_NUM: ${AGENT_NUM}
+  data:
+    image: covins
+    depends_on:
+      - client
+    command: /bin/bash -c "python main.py ${AGENT_NUM}"
+    network_mode: "host"
+    working_dir: /root/covins_ws/code/player
+    volumes:
+      - ${CODE}:${CATKIN_WS}/code
+      - "${DATASET}${AGENT_NUM}:${CATKIN_WS}/dataset"
+    environment:
+      ROS_MASTER_URI: ${ROS_MASTER_URI}
+      AGENT_NUM: ${AGENT_NUM}
+      
