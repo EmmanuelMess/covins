@@ -15,5 +15,6 @@ services:
     volumes:
       - ${CONFIG_FILE_COMM}:${CATKIN_WS}/src/covins/covins_comm/config/config_comm.yaml
       - ${CONFIG_FILE_BACKEND}:${CATKIN_WS}/src/covins/covins_backend/config/config_backend.yaml
+      - ${OUTPUTS_FOLDER}:${CATKIN_WS}/src/covins/covins_backend/output
     environment:
       ROS_MASTER_URI: ${ROS_MASTER_URI}

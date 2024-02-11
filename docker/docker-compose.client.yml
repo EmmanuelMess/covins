@@ -10,17 +10,3 @@ services:
     environment:
       ROS_MASTER_URI: ${ROS_MASTER_URI}
       AGENT_NUM: ${AGENT_NUM}
-  data:
-    image: covins
-    depends_on:
-      - client
-    command: /bin/bash -c "python main.py ${AGENT_NUM}"
-    network_mode: "host"
-    working_dir: /root/covins_ws/code/player
-    volumes:
-      - ${CODE}:${CATKIN_WS}/code
-      - "${DATASET}${AGENT_NUM}:${CATKIN_WS}/dataset"
-    environment:
-      ROS_MASTER_URI: ${ROS_MASTER_URI}
-      AGENT_NUM: ${AGENT_NUM}
-      
