@@ -44,6 +44,18 @@ RUN apt-get update && apt-get install -y \
                       libomp-dev \
                       libglew-dev
 
+    
+#--------------------------
+# Add opencv
+#--------------------------
+RUN apt-get update && apt-get install -y \
+                      python-pip \
+                      python-tk \
+                      && rm -rf /var/lib/apt/lists/*
+
+RUN python -m pip install pip==20.3.4
+RUN python -m pip install opencv-python==4.2.0.32 bagpy pathlib
+
 #--------------------------
 # BUILD COVINS
 #--------------------------
@@ -79,14 +91,3 @@ RUN cd src && \
     ldd libcv_bridge.so | grep opencv_core && \
     catkin build -j $NR_JOBS ORB_SLAM3
     
-    
-#--------------------------
-# Add opencv
-#--------------------------
-RUN apt-get update && apt-get install -y \
-                      python-pip \
-                      python-tk \
-                      && rm -rf /var/lib/apt/lists/*
-
-RUN python -m pip install --upgrade pip
-RUN python -m pip install opencv-python bagpy pathlib
