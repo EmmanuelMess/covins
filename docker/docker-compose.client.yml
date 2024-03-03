@@ -7,6 +7,7 @@ services:
     volumes:
       - ${CONFIG_FILE_COMM}:${CATKIN_WS}/src/covins/covins_comm/config/config_comm.yaml
       - ${LAUNCH_FILE}:${CATKIN_WS}/src/covins/orb_slam3/Examples/ROS/ORB_SLAM3/launch/launch_docker_ros_euroc.launch
+      - ${DATA_FILE}:${CATKIN_WS}/src/covins/orb_slam3/Examples/Monocular-Inertial/replication.yaml
     environment:
       ROS_MASTER_URI: ${ROS_MASTER_URI}
       AGENT_NUM: ${AGENT_NUM}
